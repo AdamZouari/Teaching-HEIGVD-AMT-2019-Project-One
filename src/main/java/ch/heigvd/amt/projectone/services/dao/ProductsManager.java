@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class ProductsManager implements ProductsManagerLocal {
@@ -18,10 +20,40 @@ public class ProductsManager implements ProductsManagerLocal {
     @Resource(lookup = "jdbc/chillout")
     private DataSource dataSource;
 
+    public List<Product> getAllProducts(int currentPage, int recordsPerPage) {
+
+        Connection connection = null;
+        List<Product> products = new ArrayList<>();
+
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+
+        try {
+            connection = dataSource.getConnection();
+            System.out.println("Schema : " + connection.getSchema());
+            System.out.println("Catalog : " + connection.getCatalog());
+
+            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM `Product` LIMIT ?, ?");
+            pstmt.setInt(1, start);
+            pstmt.setInt(2, recordsPerPage);
+
+
+            getProducts(products, pstmt);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return products;
+    }
+
     public List<Product> getAllProducts() {
 
         Connection connection = null;
         List<Product> products = new ArrayList<>();
+
+
 
         try {
             connection = dataSource.getConnection();
@@ -29,14 +61,8 @@ public class ProductsManager implements ProductsManagerLocal {
             System.out.println("Catalog : " + connection.getCatalog());
 
             PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM `Product`");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                double unitPrice = rs.getDouble("unitPrice");
-                String description = rs.getString("description");
-                products.add(new Product(id, name, unitPrice, description));
-            }
+
+            getProducts(products, pstmt);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,5 +184,37 @@ public class ProductsManager implements ProductsManagerLocal {
 
     }
 
+    @Override
+    public int getNumberOfRows() {
+        String sql = "SELECT COUNT(id) FROM `Product`";
+        int numOfRows = 0;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement  = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            if (resultSet.next()){
+                numOfRows = resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+
+        return numOfRows;
+    }
+
+    private void getProducts(List<Product> products, PreparedStatement pstmt) throws SQLException {
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            double unitPrice = rs.getDouble("unitPrice");
+            String description = rs.getString("description");
+            products.add(new Product(id, name, unitPrice, description));
+        }
+    }
 }

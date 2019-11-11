@@ -36,8 +36,54 @@
         <div class="brand">
             <h1>Products</h1>
         </div>
+        <div class="row col-md-6">
+            <table class="table table-striped table-bordered table-sm">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
 
-<%--        <c:forEach items="${products}" var="product">--%>
+                <c:forEach items="${products}" var="prooduct">
+                    <tr>
+                        <td>${prooduct.name}</td>
+                        <td>${prooduct.unitPrice}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+
+        <nav aria-label="Navigation for products">
+            <ul class="pagination">
+                <c:if test="${currentPage != 1}">
+                    <li class="page-item"><a class="page-link"
+                                             href="/projectone/products?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
+                    </li>
+                </c:if>
+
+                <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:choose>
+                        <c:when test="${currentPage eq i}">
+                            <li class="page-item active"><a class="page-link">
+                                    ${i} <span class="sr-only">(current)</span></a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link"
+                                                     href="/projectone/products?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <c:if test="${currentPage lt noOfPages}">
+                    <li class="page-item"><a class="page-link"
+                                             href="/projectone/products?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
+
+    <%--        <c:forEach items="${products}" var="product">--%>
 <%--            <div class="card" style="width: 20rem;">--%>
 <%--                <img class="card-img-top"--%>
 <%--                     src="./assets/img/photo_not_found.gif"--%>
@@ -52,66 +98,66 @@
     </div>
 
 
-    <%--        <c:if test="${sessionScope.user.isAdmin == true}">--%>
-    <div class="text-center">
-        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalProduct">Add product</a>
-    </div>
+<%--            <c:if test="${sessionScope.user.isAdmin == true}">--%>
+<%--    <div class="text-center">--%>
+<%--        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalProduct">Add product</a>--%>
+<%--    </div>--%>
 
-    <div class="modal fade" id="modalProduct" tabindex="-1" data-backdrop="false">
-        <div class="modal-dialog modal-login" role="document">
-            <div class="modal-content">
-                <div class="card card-signup card-plain">
-                    <div class="modal-body">
-                        <form class="form" method="post" action="./products">
-                            <p class="description text-center">Add product</p>
-                            <div class="card-body">
-                                <div class="form-group bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="material-icons">face</i></div>
-                                        </div>
-                                        <label>
-                                            Name
-                                            <input name="name" type="text" class="form-control" placeholder="Name">
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="material-icons">face</i></div>
-                                        </div>
-                                        <label>
-                                            Unit Price
-                                            <input name="price" type="text" class="form-control" placeholder="Unit Price">
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="material-icons">face</i></div>
-                                        </div>
-                                        <label>
-                                            Description
-                                            <input name="desc" type="text" placeholder="Description" class="form-control">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-link btn-wd btn-lg">Update</button>
-                                <button type="button" class="btn btn-outline-info waves-effect ml-auto"
-                                        data-dismiss="modal">Close
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <%--        </c:if>--%>
+<%--    <div class="modal fade" id="modalProduct" tabindex="-1" data-backdrop="false">--%>
+<%--        <div class="modal-dialog modal-login" role="document">--%>
+<%--            <div class="modal-content">--%>
+<%--                <div class="card card-signup card-plain">--%>
+<%--                    <div class="modal-body">--%>
+<%--                        <form class="form" method="post" action="./products">--%>
+<%--                            <p class="description text-center">Add product</p>--%>
+<%--                            <div class="card-body">--%>
+<%--                                <div class="form-group bmd-form-group">--%>
+<%--                                    <div class="input-group">--%>
+<%--                                        <div class="input-group-prepend">--%>
+<%--                                            <div class="input-group-text"><i class="material-icons">face</i></div>--%>
+<%--                                        </div>--%>
+<%--                                        <label>--%>
+<%--                                            Name--%>
+<%--                                            <input name="name" type="text" class="form-control" placeholder="Name">--%>
+<%--                                        </label>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                                <div class="form-group bmd-form-group">--%>
+<%--                                    <div class="input-group">--%>
+<%--                                        <div class="input-group-prepend">--%>
+<%--                                            <div class="input-group-text"><i class="material-icons">face</i></div>--%>
+<%--                                        </div>--%>
+<%--                                        <label>--%>
+<%--                                            Unit Price--%>
+<%--                                            <input name="price" type="text" class="form-control" placeholder="Unit Price">--%>
+<%--                                        </label>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                                <div class="form-group bmd-form-group">--%>
+<%--                                    <div class="input-group">--%>
+<%--                                        <div class="input-group-prepend">--%>
+<%--                                            <div class="input-group-text"><i class="material-icons">face</i></div>--%>
+<%--                                        </div>--%>
+<%--                                        <label>--%>
+<%--                                            Description--%>
+<%--                                            <input name="desc" type="text" placeholder="Description" class="form-control">--%>
+<%--                                        </label>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+<%--                            <div class="modal-footer justify-content-center">--%>
+<%--                                <button type="submit" class="btn btn-primary btn-link btn-wd btn-lg">Update</button>--%>
+<%--                                <button type="button" class="btn btn-outline-info waves-effect ml-auto"--%>
+<%--                                        data-dismiss="modal">Close--%>
+<%--                                </button>--%>
+<%--                            </div>--%>
+<%--                        </form>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--            </c:if>--%>
 </div>
 
 

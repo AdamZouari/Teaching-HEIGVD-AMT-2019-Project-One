@@ -7,6 +7,8 @@ import java.util.List;
 
 @Local
 public interface ProductsManagerLocal extends IDAO<Product> {
+    List<Product> getAllProducts(int currentPage, int recordsPerPage);
     List<Product> getAllProducts();
-    public int getIdByName(String username);
+    int getIdByName(String username);
+    int getNumberOfRows();
 }

@@ -27,11 +27,11 @@ public class ProductsServlet extends HttpServlet {
         String price = request.getParameter("price");
         String description = request.getParameter("desc");
 
-        if (name.isEmpty() || price.isEmpty() || description.isEmpty()){
+        if (name.isEmpty() || price.isEmpty() || description.isEmpty()) {
             error = "Cannot have empty params";
             request.setAttribute("error", error);
             request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request, response);
-        } else if (isBeerRegistered(name)){
+        } else if (isBeerRegistered(name)) {
             error = "Duplicate beer";
             request.setAttribute("error", error);
             request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request, response);
@@ -56,14 +56,31 @@ public class ProductsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setAttribute("products", productsManagerLocal.getAllProducts());
+
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        int recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
+
+        int rows = productsManagerLocal.getNumberOfRows();
+        int nOfPages = rows / recordsPerPage;
+
+        if (nOfPages % recordsPerPage > 0) {
+            nOfPages++;
+            if (nOfPages % recordsPerPage > 0) {
+                nOfPages++;
+            }
+        }
+
+        request.setAttribute("products", productsManagerLocal.getAllProducts(currentPage, recordsPerPage));
+        request.setAttribute("noOfPages", nOfPages);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
         request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request, response);
     }
 
     private boolean isBeerRegistered(String name) {
         List<Product> products = productsManagerLocal.getAllProducts();
         for (Product p : products) {
-            if (name.equals(p.getName())){
+            if (name.equals(p.getName())) {
                 return true;
             }
         }

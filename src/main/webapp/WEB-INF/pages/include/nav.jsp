@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="dropdown nav-item">
-                    <a class="nav-link" href="./products">
+                    <a class="nav-link" href="./products?recordsPerPage=10&currentPage=1">
                         <i class="material-icons">storefront</i> Products
                     </a>
                 </li>
