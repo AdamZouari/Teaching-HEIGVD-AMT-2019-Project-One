@@ -33,7 +33,7 @@ public class ProfileServlet extends HttpServlet {
 
         if (id != -1) {
             Client client = clientsManagerLocal.getClientById(id);
-            client = new Client(client.getId(), name, username, client.getPassword(), client.isAdmin());
+            client = Client.builder().id(client.getId()).name(name).username(username).password(client.getPassword()).isAdmin(client.isAdmin()).build();
             try {
                 clientsManagerLocal.update(client);
                 HttpSession session = request.getSession();

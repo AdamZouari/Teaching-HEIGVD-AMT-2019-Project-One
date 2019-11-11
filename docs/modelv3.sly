@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
 <classDiagram>
   <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="AMT-ProjectOne">
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="5919" name="">
+      <role componentId="5543" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="5885" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+    <entity entityType="CLASS" id="5885" isAbstract="false" name="OrderItem" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="id" type="int" visibility="PRIVATE"/>
+    </entity>
     <entity entityType="ASSOCIATION_CLASS" id="5543" isAbstract="false" name="Order" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="idOrder" type="int" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="status" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="command" type="Map&lt;Integer,Integer&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="command" type="String" visibility="PRIVATE"/>
       <associationClassID>5544</associationClassID>
     </entity>
     <association aggregation="NONE" direction="BIDIRECTIONAL" id="5544" name="">
@@ -21,17 +38,17 @@
         </multiplicity>
       </role>
     </association>
-    <entity entityType="CLASS" id="4127" isAbstract="false" name="Product" visibility="PUBLIC">
-      <attribute const="false" defaultValue="" isStatic="false" name="id" type="int" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="unitPrice" type="int" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="description" type="String" visibility="PRIVATE"/>
-    </entity>
     <entity entityType="CLASS" id="4128" isAbstract="false" name="Client" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="idClient" type="int" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="username" type="String" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="password" type="String" visibility="PRIVATE"/>
+    </entity>
+    <entity entityType="CLASS" id="4127" isAbstract="false" name="Product" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="id" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="unitPrice" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="description" type="String" visibility="PRIVATE"/>
     </entity>
   </diagramElements>
   <umlView grid="10" name="Main view" open="true">
@@ -85,22 +102,22 @@
         </point>
         <point>
           <x>351</x>
-          <y>266</y>
+          <y>267</y>
         </point>
       </line>
     </relationView>
-    <componentView color="-2079" componentID="4128" displayAttributes="true" displayDefault="true" displayMethods="true">
-      <geometry>
-        <x>290</x>
-        <y>60</y>
-        <w>150</w>
-        <h>115</h>
-      </geometry>
-    </componentView>
     <componentView color="-2079" componentID="4127" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
         <x>280</x>
         <y>360</y>
+        <w>150</w>
+        <h>115</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="4128" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>290</x>
+        <y>60</y>
         <w>150</w>
         <h>115</h>
       </geometry>
