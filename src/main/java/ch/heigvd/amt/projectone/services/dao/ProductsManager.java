@@ -33,7 +33,7 @@ public class ProductsManager implements ProductsManagerLocal {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Double unitPrice = rs.getDouble("unitPrice");
+                double unitPrice = rs.getDouble("unitPrice");
                 String description = rs.getString("description");
                 products.add(new Product(id, name, unitPrice, description));
             }
@@ -93,6 +93,29 @@ public class ProductsManager implements ProductsManagerLocal {
             closeConnection(connection);
         }
         return product;
+    }
+
+    public int getIdByName(String username) {
+
+        int id = -1;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM `Product` WHERE name = ?");
+            preparedStatement.setString(1, username);
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return id;
+
     }
 
     @Override

@@ -64,13 +64,17 @@ S<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
                                                     <p>
                                                         ${order.idClient}
                                                     </p>
-                                                    <p>
-                                                        <c:forEach items="${sessionScope.products}" var="product">
-                                                            <c:if test="${(order.command.idProduit == sessionScope.products.id)}">
-                                                                product.name
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </p>
+                                                    <c:forEach items="${orderItems}" var="orderItem">
+                                                        <c:if test="${(orderItem.id == order.idOrderItem)}">
+                                                            <c:forEach items="${products}" var="product">
+                                                                <c:if test="${(orderItem.productId == product.id)}">
+                                                                    <p>
+                                                                            ${product.name}
+                                                                    </p>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,6 +94,7 @@ S<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="assets/js/core/popper.min.js" type="text/javascript"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
 <script src="assets/js/plugins/moment.min.js"></script>
+<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
 <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
 <script src="assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->

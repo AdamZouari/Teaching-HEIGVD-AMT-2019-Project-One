@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "RegisterServlet",urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
@@ -33,15 +34,19 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("error", error);
             request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
 
-        } else if (password.equals(password_confirm)){
+        } else if (isUserInDB(username)) {
+            error = "Utilisateur non valide";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
+        } else if (password.equals(password_confirm)) {
             try {
-                clientsManagerLocal.create(new Client(name,username,password));
+                clientsManagerLocal.create(new Client(name, username, password));
                 response.sendRedirect(request.getContextPath() + "/login");
 
             } catch (DuplicateKeyException e) {
                 e.printStackTrace();
             }
-        } else{
+        } else {
             error = "Les deux passwords ne correspondent pas";
             request.setAttribute("error", error);
             request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
@@ -52,8 +57,18 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-
-        //TODO : TO change to an register Page similar to login page)
         req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+    }
+
+    private boolean isUserInDB(String username){
+        List<Client> clients = clientsManagerLocal.getAllClients();
+
+        for (Client c: clients) {
+            if (username.equals(c.getUsername())){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
