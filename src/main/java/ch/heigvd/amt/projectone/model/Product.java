@@ -20,4 +20,8 @@ public class Product {
         this.unitPrice = unitPrice;
         this.description = description;
     }
+
+    public Product(String name, double unitPrice, String description) {
+       this(-1,name,unitPrice,description);
+    }
 }
