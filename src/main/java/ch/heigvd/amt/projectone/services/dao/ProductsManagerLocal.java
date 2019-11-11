@@ -8,5 +8,5 @@ import java.util.List;
 @Local
 public interface ProductsManagerLocal extends IDAO<Product> {
     List<Product> getAllProducts();
-
+    public int getIdByName(String username);
 }

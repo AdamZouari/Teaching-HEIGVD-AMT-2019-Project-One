@@ -98,6 +98,29 @@ public class ProductsManager implements ProductsManagerLocal {
         return product;
     }
 
+    public int getIdByName(String username) {
+
+        int id = -1;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM `Product` WHERE name = ?");
+            preparedStatement.setString(1, username);
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return id;
+
+    }
+
     @Override
     public void update(Product entity) throws KeyNotFoundException {
 
