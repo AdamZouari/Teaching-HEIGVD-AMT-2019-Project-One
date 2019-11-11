@@ -16,9 +16,6 @@ Voici les instructions pour déployer le projet à l'aide de `docker-compose`
     - `dev` pour lancer le `docker` sans déployer un `.war`, ce qui pose problème lors du lancement des tests `Arquillian`
     - `prod` pour déployer le `.war` 
 
-Suite au lancement du script, un million de `Products` vont être générés.
-Il faut dont être un peu patient et attendre plus ou moins une minute pour que les données soient mises sur la base de données et atteignables.  
-
 Une fois l'application déployée, nous obtenons 3 containers `docker` : 
  - [`payara`](docker/images/payara/Dockerfile) (version avec le `.war``deployée)
  - [`mysql`](docker/images/mysql/Dockerfile)
@@ -152,6 +149,9 @@ Enfin pour nos DAO nous avons ecrit des tests Arquillian. Ici nous testons notre
 
 ```
 
+### Test de charge
+
+Nous n'avons pas eu le temps de générer les un milion de données et donc nous n'avons pas eu le temps de faire une comparaison entre la pagination et sans la pagination.
 
 ## Liste des bugs connus
 - Path transveral, une fois l'user connecté il est possible de changer l'id pour se faire passer pour un autre user.
