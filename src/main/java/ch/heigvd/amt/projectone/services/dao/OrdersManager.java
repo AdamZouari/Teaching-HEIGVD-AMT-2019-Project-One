@@ -32,8 +32,8 @@ public class OrdersManager implements OrdersManagerLocal {
             while(rs.next()){
                 int id = rs.getInt("id");
                 int idClient = rs.getInt("idClient");
-                String command = rs.getString("command");
-                orders.add(new Order(id, idClient, command));
+                int idOrderItem = rs.getInt("idOrderItem");
+                orders.add(new Order(id, idClient, idOrderItem));
             }
 
             connection.close();
@@ -59,9 +59,9 @@ public class OrdersManager implements OrdersManagerLocal {
             if (result.next()) {
                 int id = result.getInt("id");
                 int idClientDB = result.getInt("idClient");
-                String command = result.getString("command");
+                int idOrderItem = result.getInt("idOrderItem");
 
-                orders.add(new Order(id,idClientDB,command));
+                orders.add(new Order(id,idClientDB,idOrderItem));
             }
 
         } catch (SQLException e) {
@@ -80,9 +80,9 @@ public class OrdersManager implements OrdersManagerLocal {
         try {
             connection = dataSource.getConnection();
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO `Order` (idClient, command) VALUES(?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `Order` (idClient, idOrderItem) VALUES(?, ?);", Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, entity.getIdClient());
-            statement.setString(2, entity.getCommand());
+            statement.setInt(2, entity.getIdOrderItem());
 
             statement.execute();
 
@@ -109,9 +109,9 @@ public class OrdersManager implements OrdersManagerLocal {
             if (result.next()) {
                 int idDB = result.getInt("id");
                 int idClient = result.getInt("idClient");
-                String command = result.getString("command");
+                int idOrderItem = result.getInt("idOrderItem");
 
-                order = new Order(idDB,idClient,command);
+                order = new Order(idDB,idClient,idOrderItem);
             }
 
         } catch (SQLException e) {
@@ -130,8 +130,8 @@ public class OrdersManager implements OrdersManagerLocal {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Order SET command = ? WHERE id = ?");
-            preparedStatement.setString(1, entity.getCommand());
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Order SET idOrderItem = ? WHERE id = ?");
+            preparedStatement.setInt(1, entity.getIdOrderItem());
             preparedStatement.setInt(2, entity.getId());
             preparedStatement.executeUpdate();
 

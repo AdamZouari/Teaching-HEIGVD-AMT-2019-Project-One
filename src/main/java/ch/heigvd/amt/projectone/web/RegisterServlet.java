@@ -62,17 +62,14 @@ public class RegisterServlet extends HttpServlet {
     }
 
     private boolean isUserInDB(String username){
-
-        boolean isIn = false;
         List<Client> clients = clientsManagerLocal.getAllClients();
 
         for (Client c: clients) {
             if (username.equals(c.getUsername())){
-                isIn = true;
-                break;
+                return true;
             }
         }
 
-        return isIn;
+        return false;
     }
 }
