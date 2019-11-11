@@ -30,7 +30,7 @@
 
 <jsp:include page="include/nav.jsp" />
 
-<div class="page-header header-filter" style="background-image: url('./assets/img/bg8.jpg'); background-size: cover; background-position: top center;">
+<div class="page-header header-filter" style="margin-top: 50px; background-image: url('./assets/img/bg8.jpg'); background-size: cover; background-position: top center;">
     <div class="container">
 
         <div class="row">

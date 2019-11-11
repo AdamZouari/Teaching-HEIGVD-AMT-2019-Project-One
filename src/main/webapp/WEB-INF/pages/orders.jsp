@@ -34,9 +34,8 @@ S<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="include/nav.jsp"/>
 
 
-<div class="container">
+<div class="container" style="margin-top: 50px;">
     <div class="row">
-        <h1>Orders</h1>
         <c:forEach items="${orders}" var="order">
             <c:if test="${(order.idClient == sessionScope.user.id)}">
                 <div class="card" style="width: 20rem;">
@@ -69,7 +68,9 @@ S<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
                                                             <c:forEach items="${productsOfOrders}" var="product">
                                                                 <c:if test="${(orderItem.productId == product.id)}">
                                                                     <p>
-                                                                            Voua avez commandé ça : ${product.name}
+                                                                            Vous avez commandé ${orderItem.quantity} ${product.name} <br>
+
+                                                                            Et du coup ça coute : ${(product.unitPrice * orderItem.quantity)}
                                                                     </p>
                                                                 </c:if>
                                                             </c:forEach>
