@@ -1,92 +1,105 @@
-# Teaching-HEIGVD-AMT-2019-Project-One
-## Objectives
+# Jeremy Zerbib, Adam Zouari
+# Projet 1 d'AMT
 
-The main objective of this project is to apply the patterns and techniques presented during the lectures, and to create a simple multi-tiered application in Java EE.
+## Explication de l'application
+Lors du cours d'`ÀMT`, nous avons dû développer une application multi-tiers.
+Pour ce faire, nous avons essayé de modéliser un bar fictif : le **Chillout**.
+(Toute ressemblance avec un endroit existant est fortui).  
+Pour lancer l'application, il faut suivre les instructions suivantes : 
 
-## Functional requirements
 
-* Pick the **business domain of your choice** (academic planning, travel, sports, social network, gaming, etc.). 
-* Design a **simple ch.heigvd.amt.projectone.ch.heigvd.amt.projectone.model.model**, with a small number of business entities. The only constraint is that there should be at least one **ternary association**. An example is when a "Membership" business entity captures the relationship between a "Employee" entity and a "Group" entity.
-* It should be possible to manage the business entities (i.e. perform **CRUD operations** on them).
-* It should be possible to **navigate** between the entities (e.g. in the previous example, in a page that shows a list of Memberships, it should be possible to click on one and land on a page that displays its details; from that page, it should be possible to click on a link to arrive on a page showing the details of the Employee).
-* **Access to the application is protected**: users have to **register** and **authenticate** before accessing their data. 
-* **Data is scoped**: users only see the information they have created. Unless you go the extra mile and implement a feature, where some items can be marked as "public" and are then readable by everyone.
+## Déploiement de l'architecture
+Voici les instructions pour déployer le projet à l'aide de `docker-compose`
+- Cloner le repo dans votre dossier préféré
+- Avant de lancer le script mentionné ci-dessous, il faut être sûr que `Maven`, `docker` et `docker-compose` sont installés
+- Lancer `start.sh` avec le paramètre `dev` ou `prod`. 
+    - `dev` pour lancer le `docker` sans déployer un `.war`, ce qui pose problème lors du lancement des tests `Arquillian`
+    - `prod` pour déployer le `.war` 
 
-## Constraints
+Suite au lancement du script, un million de `Products` vont être générés.
+Il faut dont être un peu patient et attendre plus ou moins une minute pour que les données soient mises sur la base de données et atteignables.  
 
-- Apply the **MVC pattern to generate markup (HTML)** on the server, and **not** to expose a REST API.
-- Implement business services as **EJBs**.
-- Store data in a **relational** database management system.
-- Implement data access with **JDBC**.
+Une fois l'application déployée, nous obtenons 3 containers `docker` : 
+ - [`payara`](docker/images/payara/Dockerfile) (version avec le `.war``deployée)
+ - [`mysql`](docker/images/mysql/Dockerfile)
+ - `php-myadmin` (directement dans le [`docker-compose.yml`](/docker/topologies/chillout-prod/docker-compose.yml)) (avec le `.war` déployé)
 
-## Non-functional requirements
+### payara: serveur d'application
+- L'application se trouve à l'adresse `localhost:8080/projectone`
+- La console d'administration est accessible à l'adresse `localhost:4848` avec le couple `login:password` "*admin:admin*"
 
-* **Automation**
-  * It should be possible to build and run the application with 1 script (using Docker in the process)
-  * It should be possible to run the different types of automated tests with well documented scripts.
-* **Usability**
-  * Implement paging at the UI level (deal with 1'000'000 entities).
-  * The navigation between the pages should be intuitive.
-  * Information provided to users (e.g. error messages) should be clear.
-  * The UI must be clean (most of you are not visual designers, it's ok to pick a template but make sure that you customize it and remove the elements that are not useful for your application)
-* **Performance**
-  * It is possible to implement paging between the service tier and the resources tier. We want to know what is the impact of doing it or not. You will need to design a benchmark to answer this question. You will need to write a report to describe your experiment, to document your measurements and to explain what they mean.
-* **Security**
-  * Authentication
-  * Authorization
-* **Testing**
-  * **Unit testing**. In the report, you will document how you have tested the different types of components (ch.heigvd.amt.projectone.ch.heigvd.amt.projectone.model.model, EJBs, servlets). You will provide metrics for your test coverage.
-  * **Performance and load testing**.
-  * **Automated User Acceptance** testing (with a tool like Selenium, which we will see soon)
+#### Payara en mode debug
+Il est possible de lancer l'application en mode `debug` en écoutant le port *9009* sur l'IDE de votre choix **(testé sur IntelliJ)**.  
 
-## Organization
+Le debug se lance lorsque vous appuyez sur l'icône de *Debug* et que vous lancez l'application normalement. 
+L'application se bloque lorsque vous atteignez le *breakpoint* souhaité.
 
-**You will work in teams of 2 students**. For effective learning, it is important that each person works on every aspect (do not split code vs testing, because you will miss learning opportunities).
+### db: serveur MySQL
+Dans le `Dockerfile`, nous voulons prendre les données du sous-dossier [`data`](docker/images/mysql/data) et le copier dans le répértoire */docker-entrypoint-initdb.d*
 
-**Deadline for submission: November 10th, 23h.**
+Le mot-de-passe de l'utilisateur `root` est `root`
 
-**Deliverables:**
+### php-myadmin: interface de gestion de la base de données
+En allant sur le port `6060`, nous pouvons trouver une instance de `php-myAdmin` qui permet de gérer les données générées au préalable.
 
-* Clean git repo, with clear instructions on the main README.md for how to build, run and test your application.
-* Report as a set of markdown files in a doc folder.
-* Links to the various markdown files from the main README.md files.
-* What do we want to read in your report?
-  * **What** you have implemented (functional aspects). Tell us briefly about the business domain you have selected and describe your business ch.heigvd.amt.projectone.ch.heigvd.amt.projectone.model.model. A diagram showing the entities and their relationships will help. A couple of screenshots too.
-  * **How** you have implemented it. Tell us briefly about the components you had to use across the tiers and if you encountered issues or made choices that you find interesting.
-  * You **testing strategy**: we want to see that you understand the role and value of the different types of automated tests. We want to see that you can explain what tools can be used t implement these types of tests. We want to have your opinion on the effectiveness of your test strategy (what do you like and what do you not like about your test suite?)
-  * In particular a detailed report about your **experiment** to answer the performance tests. We want a clear description of the experiment. We want numbers, graphs and explanations of what they mean.
-  * A list of **known bugs and limitations**.
+## Utilisation de notre site Web
+Deux utilisateurs sont déjà créés au lancement du projet
 
-## Proposed timeline
+| Nom d'utilisateur   | Mot-de-passe |
+|---------------------|--------------|
+| azouari             | azouari     |
+| jzerbib             | jzerbib     |
 
-You don't have to follow this sequence if you prefer to do some of the tasks before. However, if you don't know how to start, this is probably a **decomposition** that will help you.
 
-**Week 1 (October 7th): project structure, domain ch.heigvd.amt.projectone.ch.heigvd.amt.projectone.model.model, MVC iteration 1, unit testing**
+## Description fonctionnelle
+Notre application est composée de 6 pages : 
 
-* ~~You should have a project in GitHub (or GitLab). Add your full e-mails, GitHub IDs and the repo URL on this [sheet](https://docs.google.com/spreadsheets/d/1vh1dKHtx6FnlnnNwTdk4VlRpzfjS_htFNRVCUtyKgsQ/edit?usp=sharing).~~
-* ~~You should have selected your business domain (don't waste 2 hours on this, it is not the most important thing). You should have a first version of your business entities and their properties.~~ -> chillout.ch
-* ~~You should have a mockup of your UI.~~
-* ~~You should have a script that builds a fresh Docker image and a `docker-compose.yml` file that uses this image.~~ It should be possible for someone to clone your repo and test your app with 1-2 commands.
-* You should have unit test for your domain objects. We will see how to unit test servlets next week.
+### Login (Page d'accueil)
+![login](./docs/img/login.png)
 
-**Week 2 (October 14th): data access**
+Cette page  permet d'accéder au reste de l'application.
+Tout le site n'est pas atteignable si l'utilisateur n'est pas validé.
+Seule une paire *login:password* permet l'accès au site.  
 
-* You should have DAOs to access your database and they should implement the CRUD methods with JDBC.
-* You should have connected these DAOs to your controllers (up-to-you to decide if / when to use business services in the middle).
-* The database should be part of your docker-compose setup.
-* You should have procedure to generate test data (and instructions for how to use it in your repo).
+Si une mauvaise paire est envoyée, alors l'utilisateur est renvoyé vers la même page.
+L'application renvoie les messages d'erreurs voulus.
 
-**Week 3 (October 21st) : MVC iteration 2**
+### Register
+![register](./docs/img/register.png)
 
-- This should be an iteration over the UI of your application, where you can improve it, add optional features, etc.
+Sur cette page, l'utilisateur peut se créer un compte qui n'est pas `administrateur`.  
 
-**Week 4 (October 28th): load testing**
+Si un des champs n'est pas valide, par exemple, si un champ est vide, alors le formulaire se vide et la page se recharge avec les messages d'erreurs.
 
-* You should be able to explain what is the impact of doing pagination between the business and the resources tier. This should not only be theoretical: you must have designed and run an experiment (benchmark).
-* Someone cloning your repo must have all the information to re-run the experiment (and the procedure should be automated as much as possible).
+### "Home"
+![home](./docs/img/home.png)
 
-**Week 5 (November 4th): User Acceptance Testing**
+Cette page sert d'accueil à tout utilisateur identifié.
+Depuis cette page, l'utilisateur peut aller sur les pages de son choix.
 
-* You should have defined test scenarios at the UI level and used a tool such as Selenium to implement them. 
-* Someone cloning your repo must have all the information to run the tests.
+### Products
+![products](./docs/img/products.png)
 
+Nous pouvons voir la liste des bières disponibles sur cette page (Noms de ville mais l'idée est là).
+Nous avons choisi une image stock pour montrer que l'image n'est pas disponible et nous affichons une description "*précise*" et personnelle à chaque bière.
+(Vous comprenez bien que nous n'avions pas le temps de prendre autre chose que des Lorem Ipsum).
+
+### Orders
+![orders_welcome](./docs/img/orders_welc.png)
+Lorsque nous arrivons sur cette page, nous pouvons voir toutes les commandes faites par l'utilisateur.
+
+![orders_show_more](./docs/img/orders_show.png)
+Lorsque l'utilisateur clique sur "*Show more*", nous voyons le détail de la commande.
+
+### Profile
+
+![profile](./docs/img/profile.png)
+Sur cette page, l'utilisateur peut consulter certaines informations de son profil et les modifier.
+
+![edit](./docs/img/edit.png)
+L'édition de profile ressemble à ça.
+
+## Tests
+
+
+## Liste des bugs connus
