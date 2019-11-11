@@ -9,6 +9,6 @@ import java.util.List;
 public interface ProductsManagerLocal extends IDAO<Product> {
     List<Product> getAllProducts(int currentPage, int recordsPerPage);
     List<Product> getAllProducts();
-    int getIdByName(String username);
+    int getIdByName(String name);
     int getNumberOfRows();
 }

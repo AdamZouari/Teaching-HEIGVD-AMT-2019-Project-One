@@ -17,6 +17,12 @@ public class OrderItemManager implements OrderItemManagerLocal {
     @Resource(lookup = "jdbc/chillout")
     DataSource dataSource;
 
+    /**
+     * Cree un OrderItem
+     * @param entity base de la creation
+     * @return OrderItem
+     * @throws DuplicateKeyException
+     */
     @Override
     public OrderItem create(OrderItem entity) throws DuplicateKeyException {
         Connection connection = null;
@@ -39,6 +45,12 @@ public class OrderItemManager implements OrderItemManagerLocal {
 
     }
 
+    /**
+     * Cherche un OrderItem via son id
+     * @param id de l'OrderItem
+     * @return OrderItem
+     * @throws KeyNotFoundException
+     */
     @Override
     public OrderItem findById(int id) throws KeyNotFoundException {
         OrderItem orderItem  = null;
@@ -66,6 +78,11 @@ public class OrderItemManager implements OrderItemManagerLocal {
         return orderItem;
     }
 
+    /**
+     * Met a jour un OrderItem
+     * @param entity OrderItem
+     * @throws KeyNotFoundException
+     */
     @Override
     public void update(OrderItem entity) throws KeyNotFoundException {
 
@@ -85,6 +102,11 @@ public class OrderItemManager implements OrderItemManagerLocal {
 
     }
 
+    /**
+     * Supprime un OrderItem via son ID
+     * @param id de l'OrderItem
+     * @throws KeyNotFoundException
+     */
     @Override
     public void deleteById(int id) throws KeyNotFoundException {
         Connection connection = null;
@@ -101,6 +123,11 @@ public class OrderItemManager implements OrderItemManagerLocal {
         }
     }
 
+    /**
+     * cherche le produit de l'OrderItem
+     * @param orderItem OrderItem
+     * @return product
+     */
     @Override
     public Product getProductOfOrderItem(OrderItem orderItem) {
         Product product = null;

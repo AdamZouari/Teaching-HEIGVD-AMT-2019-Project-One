@@ -20,6 +20,12 @@ public class ProductsManager implements ProductsManagerLocal {
     @Resource(lookup = "jdbc/chillout")
     private DataSource dataSource;
 
+    /**
+     * List tous les produits avec la pagination
+     * @param currentPage page courante
+     * @param recordsPerPage nombre de Product par page
+     * @return
+     */
     public List<Product> getAllProducts(int currentPage, int recordsPerPage) {
 
         Connection connection = null;
@@ -48,6 +54,10 @@ public class ProductsManager implements ProductsManagerLocal {
         return products;
     }
 
+    /**
+     * Liste tous les Product sans pagination
+     * @return Liste de Product
+     */
     public List<Product> getAllProducts() {
 
         Connection connection = null;
@@ -72,6 +82,12 @@ public class ProductsManager implements ProductsManagerLocal {
         return products;
     }
 
+    /**
+     * Cree un Product
+     * @param entity Product
+     * @return Product
+     * @throws DuplicateKeyException
+     */
     @Override
     public Product create(Product entity) throws DuplicateKeyException {
         Connection connection = null;
@@ -93,6 +109,12 @@ public class ProductsManager implements ProductsManagerLocal {
         return entity;
     }
 
+    /**
+     * Cherche un Product via son ID
+     * @param id du Product
+     * @return Product
+     * @throws KeyNotFoundException
+     */
     @Override
     public Product findById(int id) throws KeyNotFoundException {
         Product product = null;
@@ -121,14 +143,19 @@ public class ProductsManager implements ProductsManagerLocal {
         return product;
     }
 
-    public int getIdByName(String username) {
+    /**
+     * Checrhe l'id d'un Product via son name
+     * @param name
+     * @return id d'un Product
+     */
+    public int getIdByName(String name) {
 
         int id = -1;
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM `Product` WHERE name = ?");
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, name);
             ResultSet result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -144,6 +171,11 @@ public class ProductsManager implements ProductsManagerLocal {
 
     }
 
+    /**
+     * Met a jour un Product
+     * @param entity Product
+     * @throws KeyNotFoundException
+     */
     @Override
     public void update(Product entity) throws KeyNotFoundException {
 
@@ -166,6 +198,11 @@ public class ProductsManager implements ProductsManagerLocal {
 
     }
 
+    /**
+     * Supprime un Product via son ID
+     * @param id du Product
+     * @throws KeyNotFoundException
+     */
     @Override
     public void deleteById(int id) throws KeyNotFoundException {
 
@@ -184,6 +221,10 @@ public class ProductsManager implements ProductsManagerLocal {
 
     }
 
+    /**
+     * Compte le nombre de produits dans la base de donnees
+     * @return nombre de Product
+     */
     @Override
     public int getNumberOfRows() {
         String sql = "SELECT COUNT(id) FROM `Product`";
@@ -207,6 +248,12 @@ public class ProductsManager implements ProductsManagerLocal {
         return numOfRows;
     }
 
+    /**
+     * Construit une liste de Product grace a une requete SQL
+     * @param products Liste de Product
+     * @param pstmt requete
+     * @throws SQLException
+     */
     private void getProducts(List<Product> products, PreparedStatement pstmt) throws SQLException {
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {

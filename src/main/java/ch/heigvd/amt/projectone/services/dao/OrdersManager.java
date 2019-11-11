@@ -20,6 +20,10 @@ public class OrdersManager implements OrdersManagerLocal {
     @Resource(lookup = "jdbc/chillout")
     DataSource dataSource;
 
+    /**
+     * Checrhe tous les Order
+     * @return Liste d'Order
+     */
     public List<Order> getAllOrders(){
 
         List<Order> orders = new ArrayList<>();
@@ -46,6 +50,11 @@ public class OrdersManager implements OrdersManagerLocal {
 
     }
 
+    /**
+     * Cherche les Order faite par un Client via son id
+     * @param idClient
+     * @return List<Order>
+     */
     public List<Order> findOrdersByClientId(int idClient) {
         List<Order> orders = new ArrayList<>();
         Connection connection = null;
@@ -73,6 +82,12 @@ public class OrdersManager implements OrdersManagerLocal {
 
     }
 
+    /**
+     * Cree une Order
+     * @param entity a creer
+     * @return Order
+     * @throws DuplicateKeyException
+     */
     @Override
     public Order create(Order entity) throws DuplicateKeyException {
         Connection connection = null;
@@ -95,6 +110,12 @@ public class OrdersManager implements OrdersManagerLocal {
 
     }
 
+    /**
+     * Cherche une Order via son id
+     * @param id de l'Order
+     * @return Order
+     * @throws KeyNotFoundException
+     */
     @Override
     public Order findById(int id) throws KeyNotFoundException {
         Order order = null;
@@ -123,7 +144,11 @@ public class OrdersManager implements OrdersManagerLocal {
 
     }
 
-
+    /**
+     * Met a jour une Order
+     * @param entity Order
+     * @throws KeyNotFoundException
+     */
     @Override
     public void update(Order entity) throws KeyNotFoundException {
 
@@ -143,6 +168,11 @@ public class OrdersManager implements OrdersManagerLocal {
 
     }
 
+    /**
+     * Supprime une Order via son ID
+     * @param id de l'Order
+     * @throws KeyNotFoundException
+     */
     @Override
     public void deleteById(int id) throws KeyNotFoundException {
 
