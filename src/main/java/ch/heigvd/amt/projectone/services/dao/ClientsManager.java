@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class ClientsManager implements ClientsManagerLocal {
@@ -165,6 +167,35 @@ public class ClientsManager implements ClientsManagerLocal {
         return client;
 
     }
+
+    public List<Client> getAllClients(){
+        Connection connection = null;
+        List<Client> clients = new ArrayList<>();
+
+        try {
+            connection = dataSource.getConnection();
+            System.out.println("Schema : " + connection.getSchema());
+            System.out.println("Catalog : " + connection.getCatalog());
+
+            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM `Client`");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                boolean isAdmin = rs.getBoolean("isAdmin");
+                clients.add(new Client(id, name, username, password, isAdmin));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return clients;
+    }
+
 
     private Client getClient(PreparedStatement ps){
         try {

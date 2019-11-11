@@ -36,7 +36,7 @@ public class ProductsManager implements ProductsManagerLocal {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Double unitPrice = rs.getDouble("unitPrice");
+                double unitPrice = rs.getDouble("unitPrice");
                 String description = rs.getString("description");
                 products.add(new Product(id, name, unitPrice, description));
             }
