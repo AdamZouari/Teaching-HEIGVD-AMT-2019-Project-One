@@ -101,5 +101,59 @@ L'édition de profile ressemble à ça.
 
 ## Tests
 
+Par manque de temps, nous avons dû effecuter des tests très simpliste.
+
+### JUnit
+
+Pour nos modèles, nous avons écrit des test JUnit. 
+Ici nous testons le modèle `Product` :
+
+```
+@Test
+    void itShouldBePossibleToCreateProduct(){
+        Product product = Product.builder()
+                .id(2)
+                .name("Boxer")
+                .unitPrice(2.00)
+                .description("Bière Romande par excellence.")
+                .build();
+        assertEquals("Boxer", product.getName());
+        assertEquals(2.00, product.getUnitPrice());
+
+    }
+
+```
+### Mockito
+
+Dans le cas des Servlets, nous avons effectuer des test Mockito. 
+Nous avons eu beaucoup de difficultés à comprendre le fonctionnement de ces test et c'est la raison pour laquelle vous trouverez des classes de tests vides et d'autres commentées. Ici nous testons le `LogoutServlet` :
+
+
+```
+  @Test
+    public void doGet() throws ServletException, IOException {
+        servlet.doGet(request, response);
+        verify(session, atLeastOnce()).invalidate();
+        verify(response, atLeastOnce()).sendRedirect(request.getContextPath() + "/login");
+    }
+```
+
+### Arquillian
+
+Enfin pour nos DAO nous avons ecrit des tests Arquillian. Ici nous testons notre `ProductManager` :
+```
+
+@Test
+    @Transactional(TransactionMode.ROLLBACK)
+    public void itShouldBePossibleToCreateProduct() throws DuplicateKeyException {
+        Product boxer = Product.builder().name("boxer").unitPrice(2.00).description("Bière Romande par excellence.").build();
+        productsManagerLocal.create(boxer);
+    }
+
+```
+
 
 ## Liste des bugs connus
+- Path transveral, une fois l'user connecté il est possible de changer l'id pour se faire passer pour un autre user.
+- Mots de passes stockées en clair
+
