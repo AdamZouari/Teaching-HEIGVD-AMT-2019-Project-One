@@ -4,9 +4,11 @@ services:
         build: images/payara
         environment:
             - ADMIN_PASSWORD=admin
+            - PAYARA_ARGS="--debug"
         ports:
             - "8080:8080"
             - "4848:4848"
+            - "9009:9009"
         links:
             - mysql:db
     mysql:
