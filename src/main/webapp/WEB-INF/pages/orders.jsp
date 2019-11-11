@@ -62,14 +62,14 @@
                                             <div class="row">
                                                 <div>
                                                     <p>
-                                                        ${order.idClient}
+                                                            ${order.idClient}
                                                     </p>
                                                     <c:forEach items="${orderItems}" var="orderItem">
                                                         <c:if test="${(orderItem.id == order.idOrderItem)}">
-                                                            <c:forEach items="${products}" var="product">
+                                                            <c:forEach items="${productsOfOrders}" var="product">
                                                                 <c:if test="${(orderItem.productId == product.id)}">
                                                                     <p>
-                                                                            ${product.name}
+                                                                            Voua avez commandé ça : ${product.name}
                                                                     </p>
                                                                 </c:if>
                                                             </c:forEach>

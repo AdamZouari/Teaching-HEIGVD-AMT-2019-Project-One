@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @WebServlet(name = "OrdersServlet", urlPatterns = "/orders")
@@ -47,10 +48,14 @@ public class OrdersServlet extends HttpServlet {
             }
         }
 
+        orderItems = new ArrayList<>(new HashSet<>(orderItems));
+
         for (OrderItem orderItem : orderItems) {
             Product product = orderItemManagerLocal.getProductOfOrderItem(orderItem);
             products.add(product);
         }
+
+        products = new ArrayList<>(new HashSet<>(products));
 
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("orders", orders);

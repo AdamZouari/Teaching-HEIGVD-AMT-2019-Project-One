@@ -2,7 +2,6 @@ package ch.heigvd.amt.projectone.web;
 
 import ch.heigvd.amt.projectone.exceptions.DuplicateKeyException;
 import ch.heigvd.amt.projectone.model.Product;
-import ch.heigvd.amt.projectone.services.dao.ProductsManager;
 import ch.heigvd.amt.projectone.services.dao.ProductsManagerLocal;
 
 import javax.ejb.EJB;
