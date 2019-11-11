@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClientTest {
 
     @Test
-    void itShouldHaveAConstructor(){
+    void itShouldBePossibleToCreateClient(){
         Client client = Client.builder()
                 .name("olivier")
                 .username("oliechti")

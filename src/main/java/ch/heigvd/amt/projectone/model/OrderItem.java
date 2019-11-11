@@ -19,4 +19,8 @@ public class OrderItem {
         this.productId = productId;
         this.quantity = quantity;
     }
+
+    public OrderItem(int productId, int quantity) {
+        this(-1,productId,quantity);
+    }
 }
