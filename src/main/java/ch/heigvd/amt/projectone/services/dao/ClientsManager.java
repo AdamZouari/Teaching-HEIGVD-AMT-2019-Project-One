@@ -17,6 +17,12 @@ public class ClientsManager implements ClientsManagerLocal {
     private DataSource dataSource;
 
 
+    /**
+     * Creation d'un client
+     * @param entity client entre par l'utilisateur
+     * @return client cree
+     * @throws DuplicateKeyException
+     */
     @Override
     public Client create(Client entity) throws DuplicateKeyException {
 
@@ -41,6 +47,12 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     * Recherche d'un utilisateur par son id
+     * @param id de l'utilisateur
+     * @return client recherche
+     * @throws KeyNotFoundException
+     */
     @Override
     public Client findById(int id) throws KeyNotFoundException {
         Client client = null;
@@ -62,6 +74,11 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     * Mise a jour de l'utilisateur
+     * @param entity client a mettre a jour
+     * @throws KeyNotFoundException
+     */
     @Override
     public void update(Client entity) throws KeyNotFoundException {
 
@@ -85,6 +102,11 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     * Suppression d'un utilisateur avec son id
+     * @param id de l'utilisateur a supprimer
+     * @throws KeyNotFoundException
+     */
     @Override
     public void deleteById(int id) throws KeyNotFoundException {
 
@@ -103,6 +125,11 @@ public class ClientsManager implements ClientsManagerLocal {
     }
 
 
+    /**
+     * Recherche d'un utilisateur avec son username
+     * @param username de l'utilisateur recherche
+     * @return client
+     */
     public Client findClientByUsername(String username) {
         Client client = null;
         Connection connection = null;
@@ -123,6 +150,11 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     * Recherche l'id d'un utilisateur avec son username
+     * @param username de l'utilisateur
+     * @return id
+     */
     public int getIdByUsername(String username) {
 
         int id = -1;
@@ -146,6 +178,11 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Client getClientById(int id){
 
         Client client = null;
@@ -168,6 +205,10 @@ public class ClientsManager implements ClientsManagerLocal {
 
     }
 
+    /**
+     * Liste tous les clients
+     * @return Liste des clients
+     */
     public List<Client> getAllClients(){
         Connection connection = null;
         List<Client> clients = new ArrayList<>();
@@ -197,6 +238,11 @@ public class ClientsManager implements ClientsManagerLocal {
     }
 
 
+    /**
+     * Execute la requete pour retourner un client
+     * @param ps requete
+     * @return client
+     */
     private Client getClient(PreparedStatement ps){
         try {
             ResultSet resultSet = ps.executeQuery();

@@ -14,6 +14,12 @@ public class OrderItem {
     private int productId;
     private int quantity;
 
+    /**
+     * Constructeur
+     * @param id
+     * @param productId
+     * @param quantity
+     */
     public OrderItem(int id, int productId, int quantity) {
         this.id = id;
         this.productId = productId;

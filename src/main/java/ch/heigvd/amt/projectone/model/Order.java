@@ -16,6 +16,12 @@ public class Order {
     private int idClient;
     private int idOrderItem;
 
+    /**
+     * Constructeur
+     * @param id
+     * @param idClient
+     * @param idOrderItem
+     */
     public Order(int id, int idClient, int idOrderItem){
         this.id=id;
         this.idClient=idClient;

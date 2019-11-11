@@ -12,6 +12,15 @@ public class LoginFilter implements Filter {
     public void destroy() {
     }
 
+
+    /**
+     * Filtre permettant de rediriger les url marquees ci-dessus vers /login si l'utilisateur n'est pas identifié
+     * @param req requete
+     * @param resp reponse
+     * @param chain 
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) req;
         HttpServletResponse httpServletResponse = (HttpServletResponse) resp;

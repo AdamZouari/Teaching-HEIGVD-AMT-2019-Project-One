@@ -14,6 +14,13 @@ public class Product {
     private double unitPrice;
     private String description;
 
+    /**
+     * Constructeur
+     * @param id
+     * @param name
+     * @param unitPrice
+     * @param description
+     */
     public Product(int id, String name, double unitPrice, String description) {
         this.id = id;
         this.name = name;
@@ -21,6 +28,12 @@ public class Product {
         this.description = description;
     }
 
+    /**
+     * Constructeur
+     * @param name
+     * @param unitPrice
+     * @param description
+     */
     public Product(String name, double unitPrice, String description) {
        this(-1,name,unitPrice,description);
     }
